@@ -2,29 +2,35 @@
 Neuronal net that recognizes drawn numbers
 
 
-Para ejecutar Reconocedor_digitos.py(ejemplo):
+Cuando se ejecuta por primera vez, se debe entrenar la red:
 
 
-$ python Reconocedor_digitos.py 2/0.png
+
+$ python3 entrenar_red_neuronal.py
+
+
+
+Una vez entrenada sólo se ejecuta Reconocedor_digitos.py. Para ejecutar (ejemplo):
+
+
+
+$ python3 Reconocedor_digitos.py 2/0.png
 
 
 
 Requiere:
 
 
-Python 2.7
+Python 3
+
+
+Tensorflow
 
 
 Numpy
 
 
 Scipy
-
-
-Matplotlib
-
-
-OpenCV
 
 
 Pillow (Python Imaging Library)
