@@ -23,8 +23,7 @@ def reset_graph(seed=42):
 
 
 n_inputs = 28*28  # MNIST
-n_hidden1 = 300
-n_hidden2 = 100
+n_hidden1 = 30
 n_outputs = 10
 
 reset_graph()
@@ -47,17 +46,15 @@ def neuron_layer(X, n_neurons, name, activation=None):
 
 with tf.name_scope("dnn"):
     hidden1 = neuron_layer(X, n_hidden1, name="hidden1",
-                           activation=tf.nn.relu)
-    hidden2 = neuron_layer(hidden1, n_hidden2, name="hidden2",
-                           activation=tf.nn.relu)
-    logits = neuron_layer(hidden2, n_outputs, name="outputs")
+                           activation=tf.sigmoid)
+    logits = neuron_layer(hidden1, n_outputs, name="outputs")
 
 with tf.name_scope("loss"):
     xentropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y,
                                                               logits=logits)
     loss = tf.reduce_mean(xentropy, name="loss")
 
-learning_rate = 0.01
+learning_rate = 3.0
 
 with tf.name_scope("train"):
     optimizer = tf.train.GradientDescentOptimizer(learning_rate)
@@ -70,8 +67,8 @@ with tf.name_scope("eval"):
 init = tf.global_variables_initializer()
 saver = tf.train.Saver()
 
-n_epochs = 40
-batch_size = 50
+n_epochs = 30
+batch_size = 10
 
 print("Training started....")
 
