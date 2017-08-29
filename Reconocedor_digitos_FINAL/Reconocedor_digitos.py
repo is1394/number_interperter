@@ -36,8 +36,8 @@ def neuron_layer(X, n_neurons, name, activation=None):
 def predictint(imvalue):
 
 	n_inputs = 28*28
-	n_hidden1 = 300
-	n_hidden2 = 100
+	n_hidden1 = 532
+	n_hidden2 = 532
 	n_outputs = 10
 
 	reset_graph()

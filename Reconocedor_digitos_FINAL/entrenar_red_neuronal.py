@@ -23,8 +23,8 @@ def reset_graph(seed=42):
 
 
 n_inputs = 28*28  # MNIST
-n_hidden1 = 300
-n_hidden2 = 100
+n_hidden1 = 532
+n_hidden2 = 532
 n_outputs = 10
 
 reset_graph()
@@ -57,7 +57,7 @@ with tf.name_scope("loss"):
                                                               logits=logits)
     loss = tf.reduce_mean(xentropy, name="loss")
 
-learning_rate = 0.01
+learning_rate = 0.1
 
 with tf.name_scope("train"):
     optimizer = tf.train.GradientDescentOptimizer(learning_rate)
@@ -70,7 +70,7 @@ with tf.name_scope("eval"):
 init = tf.global_variables_initializer()
 saver = tf.train.Saver()
 
-n_epochs = 40
+n_epochs = 100
 batch_size = 50
 
 print("Training started....")
