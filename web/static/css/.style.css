@@ -1,0 +1,60 @@
+html, body{
+    font-family: 'Roboto', sans-serif;
+}
+
+.gray-background{
+    background-color: #E5E5E5 !important;
+}
+
+.blue-dark{
+    background-color: #2980b9;
+}
+
+.cyan{
+    background-color: #13B9FF;
+}
+
+.white-font{
+    color: white !important;
+}
+
+.panel-result{
+    border: 0.1em solid #2ecc71;
+}
+
+.panel-heading > h4 {
+    color: white;
+}
+
+.panel-result > .panel-heading{
+    background-color: #2ecc71;
+}
+
+.panel-drawing {
+    border: 0.1em solid #3498db;
+}
+
+.panel-drawing > .panel-heading{
+    background-color: #3498db;
+}
+
+.panel-content{
+    height: 23em;
+}
+
+.spaced{
+    padding: 0.5em 1em 0.5em 1em;
+}
+
+#canvas-container{
+    width: inherit;
+    height: inherit;
+}
+
+canvas{
+    cursor: pointer;
+}
+
+.white{
+    background-color: white;
+}

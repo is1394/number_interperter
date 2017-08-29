@@ -1,16 +1,14 @@
-$(document).ready(function(){
-    // init callback document ready
-    var canvasDiv = document.getElementById('canvasDiv');
-    var canvasWidth = 300;
-    var canvasHeight = 300;
+function canvasDrawing() {
+    var canvasDiv = document.getElementById('canvas-container');
+    var canvasWidth = $('#canvas-container').width();
+    var canvasHeight = $('#canvas-container').height();
     var canvas = document.createElement('canvas');
     canvas.setAttribute('id', 'canvas');
     canvas.setAttribute('width', canvasWidth);
     canvas.setAttribute('height', canvasHeight);
     canvasDiv.appendChild(canvas);
-    // canvas.style.backgroundColor = '#ffffff';
 
-    if(typeof G_vmlCanvasManager != 'undefined') {
+    if (typeof G_vmlCanvasManager != 'undefined') {
         canvas = G_vmlCanvasManager.initElement(canvas);
     }
     context = canvas.getContext("2d");
@@ -21,18 +19,17 @@ $(document).ready(function(){
     var paint;
 
     $('#canvas').mousedown(function (e) {
-        console.log(e.pageX);
-        var mouseX = e.pageX - 325;
-        var mouseY = e.pageY - 162;
+        var mouseX = e.pageX - this.offsetLeft;
+        var mouseY = e.pageY - this.offsetTop;
 
         paint = true;
-        addClick(mouseX,mouseY, false);
+        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
         redraw();
     });
 
     $('#canvas').mousemove(function (e) {
         if (paint) {
-            addClick(e.pageX - 325, e.pageY - 162, true);
+            addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
             redraw();
         }
     });
@@ -46,41 +43,12 @@ $(document).ready(function(){
         paint = false;
     });
 
-    // Add touch event listeners to canvas element
-	canvas.addEventListener("touchstart", function(e){
-		// Mouse down location
-		var mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX) - this.offsetLeft,
-			mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY) - this.offsetTop;
-		
-		paint = true;
-		addClick(mouseX, mouseY, false);
-		redraw();
-	}, false);
-	canvas.addEventListener("touchmove", function(e){
-		
-		var mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX) - this.offsetLeft,
-			mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY) - this.offsetTop;
-					
-		if(paint){
-			addClick(mouseX, mouseY, true);
-			redraw();
-		}
-		e.preventDefault()
-	}, false);
-	canvas.addEventListener("touchend", function(e){
-		paint = false;
-	  	redraw();
-	}, false);
-	canvas.addEventListener("touchcancel", function(e){
-		paint = false;
-	}, false);
-
-
     function addClick(x, y, dragging) {
         clickX.push(x);
         clickY.push(y);
         clickDrag.push(dragging);
     }
+
 
     function redraw() {
         clearCanvas();
@@ -107,7 +75,8 @@ $(document).ready(function(){
         context.clearRect(0, 0, canvasWidth, canvasHeight);
     }
 
-    $('#erase').mousedown(function (e) {
+    // button
+    $('#eraser').mousedown(function (e) {
         clickX = new Array();
         clickY = new Array();
         clickDrag = new Array();
@@ -143,39 +112,68 @@ $(document).ready(function(){
     canvas.addEventListener("touchcancel", function (e) {
         paint = false;
     }, false);
+}
 
-
-    //analize button
-    $('#analize').click(function(){
-        //init callback
-        console.log('clicked');
-        var canvas = document.getElementById('canvas');
-        var MIME_TYPE = 'image/png';
-        var image = canvas.toDataURL(MIME_TYPE);
-        $.ajax({
-            url: '/',
-            data: '{"image":"'+image+'"}',
-            type: "POST",
-            contentType: 'application/json',
-            success: function(data){
-                console.log(data);
+function drawChart(data) {
+    var ctx = $('#chart');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"],
+            datasets: [{
+                label: "Probability percentage",
+                data: data, // must be array
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(53, 105, 127, 0.2)',
+                    'rgba(204, 126, 71, 0.2)',
+                    'rgba(196, 59, 52, 0.2)',
+                    'rgba(245, 64, 103, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(53, 105, 127, 1)',
+                    'rgba(204, 126, 71, 1)',
+                    'rgba(196, 59, 52, 1)',
+                    'rgba(245, 64, 103, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'top'
             },
-        });
-
-        // var dlLink = document.createElement('a');
-        // dlLink.download = 'number';
-        // dlLink.href = image.replace(/^data:image\/[^;]/, 'data:application/octet-stream');;
-        
-        // dlLink.dataset.downloadurl = [MIME_TYPE, dlLink.download, dlLink.href].join(':');
-        // document.body.appendChild(dlLink);
-        // dlLink.click();
-        // document.body.removeChild(dlLink);
-
-        //end callback
+            title: {
+                display: true,
+                text: "Probability percentage"
+            }
+        }
     });
+}
 
 
+function sendImage(){}
 
-
-    //end callback document ready
+$(document).ready(function () {
+    $('#inner-col').outerHeight($('#outer-row').innerHeight());
+    $('#inner-row').outerHeight($('#inner-col').innerHeight());
+    
+    canvasDrawing();
+    $('#btn_analize').click(function(){
+        // sendImage()
+        data = [20, 0, 0, 0, 0, 10, 15, 0, 95, 0]
+        drawChart(data)
+    });
 });
