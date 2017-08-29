@@ -6,23 +6,24 @@ import numpy as np
 import numpy as np
 import os
 
-#MNIST imports
+# MNIST imports
 
 from tensorflow.examples.tutorials.mnist import input_data
 
-os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 mnist = input_data.read_data_sets("/tmp/data/")
 
 # to make this notebook's output stable across runs
+
+
 def reset_graph(seed=42):
     tf.reset_default_graph()
     tf.set_random_seed(seed)
     np.random.seed(seed)
 
 
-
-n_inputs = 28*28  # MNIST
+n_inputs = 28 * 28  # MNIST
 n_hidden1 = 532
 n_hidden2 = 532
 n_outputs = 10
@@ -31,6 +32,7 @@ reset_graph()
 
 X = tf.placeholder(tf.float32, shape=(None, n_inputs), name="X")
 y = tf.placeholder(tf.int64, shape=(None), name="y")
+
 
 def neuron_layer(X, n_neurons, name, activation=None):
     with tf.name_scope(name):
@@ -44,6 +46,7 @@ def neuron_layer(X, n_neurons, name, activation=None):
             return activation(Z)
         else:
             return Z
+
 
 with tf.name_scope("dnn"):
     hidden1 = neuron_layer(X, n_hidden1, name="hidden1",
@@ -92,7 +95,8 @@ print("Training finished....")
 print("Testing started...")
 
 with tf.Session() as sess:
-    saver.restore(sess, "./red_neuronal_entrenada.ckpt") # or better, use save_path
+    # or better, use save_path
+    saver.restore(sess, "./red_neuronal_entrenada.ckpt")
     X_new_scaled = mnist.test.images[:20]
     Z = logits.eval(feed_dict={X: X_new_scaled})
     y_pred = np.argmax(Z, axis=1)
@@ -100,4 +104,3 @@ with tf.Session() as sess:
 print("Predicted classes:", y_pred)
 print("Actual classes:   ", mnist.test.labels[:20])
 print("Testing finished...")
-

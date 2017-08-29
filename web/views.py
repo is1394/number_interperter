@@ -12,6 +12,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from Reconocedor_digitos_FINAL.reconocedor_digitos import evalue
+
 # Create your views here.
 def generate_name():
     return datetime.datetime.now().strftime("%Y%m%d%H%M%S")
@@ -37,5 +39,7 @@ def home(request):
         output.write(base64.decodebytes(bytestring))
         output.close()
         convert_to_jpeg(output.name)
-        return JsonResponse({'data':'success'})
+        result = evalue(output.name)
+        value = result[0].astype('str')
+        return JsonResponse({'result': value})
 

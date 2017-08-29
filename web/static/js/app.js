@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function () {
     // init callback document ready
     var canvasDiv = document.getElementById('canvasDiv');
     var canvasWidth = 300;
@@ -10,7 +10,7 @@ $(document).ready(function(){
     canvasDiv.appendChild(canvas);
     // canvas.style.backgroundColor = '#ffffff';
 
-    if(typeof G_vmlCanvasManager != 'undefined') {
+    if (typeof G_vmlCanvasManager != 'undefined') {
         canvas = G_vmlCanvasManager.initElement(canvas);
     }
     context = canvas.getContext("2d");
@@ -21,12 +21,11 @@ $(document).ready(function(){
     var paint;
 
     $('#canvas').mousedown(function (e) {
-        console.log(e.pageX);
         var mouseX = e.pageX - 325;
         var mouseY = e.pageY - 162;
 
         paint = true;
-        addClick(mouseX,mouseY, false);
+        addClick(mouseX, mouseY, false);
         redraw();
     });
 
@@ -47,33 +46,33 @@ $(document).ready(function(){
     });
 
     // Add touch event listeners to canvas element
-	canvas.addEventListener("touchstart", function(e){
-		// Mouse down location
-		var mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX) - this.offsetLeft,
-			mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY) - this.offsetTop;
-		
-		paint = true;
-		addClick(mouseX, mouseY, false);
-		redraw();
-	}, false);
-	canvas.addEventListener("touchmove", function(e){
-		
-		var mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX) - this.offsetLeft,
-			mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY) - this.offsetTop;
-					
-		if(paint){
-			addClick(mouseX, mouseY, true);
-			redraw();
-		}
-		e.preventDefault()
-	}, false);
-	canvas.addEventListener("touchend", function(e){
-		paint = false;
-	  	redraw();
-	}, false);
-	canvas.addEventListener("touchcancel", function(e){
-		paint = false;
-	}, false);
+    canvas.addEventListener("touchstart", function (e) {
+        // Mouse down location
+        var mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX) - this.offsetLeft,
+            mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY) - this.offsetTop;
+
+        paint = true;
+        addClick(mouseX, mouseY, false);
+        redraw();
+    }, false);
+    canvas.addEventListener("touchmove", function (e) {
+
+        var mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX) - this.offsetLeft,
+            mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY) - this.offsetTop;
+
+        if (paint) {
+            addClick(mouseX, mouseY, true);
+            redraw();
+        }
+        e.preventDefault()
+    }, false);
+    canvas.addEventListener("touchend", function (e) {
+        paint = false;
+        redraw();
+    }, false);
+    canvas.addEventListener("touchcancel", function (e) {
+        paint = false;
+    }, false);
 
 
     function addClick(x, y, dragging) {
@@ -107,11 +106,16 @@ $(document).ready(function(){
         context.clearRect(0, 0, canvasWidth, canvasHeight);
     }
 
-    $('#erase').mousedown(function (e) {
+    function clean() {
         clickX = new Array();
         clickY = new Array();
         clickDrag = new Array();
         clearCanvas();
+    }
+
+    $('#erase').mousedown(function (e) {
+        clean();
+
     });
 
     canvas.addEventListener("touchstart", function (e) {
@@ -146,30 +150,24 @@ $(document).ready(function(){
 
 
     //analize button
-    $('#analize').click(function(){
+    $('#analize').click(function () {
         //init callback
+        var label = $('#result');
+        label.text("");
         console.log('clicked');
         var canvas = document.getElementById('canvas');
         var MIME_TYPE = 'image/png';
         var image = canvas.toDataURL(MIME_TYPE);
         $.ajax({
             url: '/',
-            data: '{"image":"'+image+'"}',
+            data: '{"image":"' + image + '"}',
             type: "POST",
             contentType: 'application/json',
-            success: function(data){
+            success: function (data) {
                 console.log(data);
+                label.text(data.result);
             },
         });
-
-        // var dlLink = document.createElement('a');
-        // dlLink.download = 'number';
-        // dlLink.href = image.replace(/^data:image\/[^;]/, 'data:application/octet-stream');;
-        
-        // dlLink.dataset.downloadurl = [MIME_TYPE, dlLink.download, dlLink.href].join(':');
-        // document.body.appendChild(dlLink);
-        // dlLink.click();
-        // document.body.removeChild(dlLink);
 
         //end callback
     });
