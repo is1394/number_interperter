@@ -1,0 +1,2 @@
+model_checkpoint_path: "red_neuronal_entrenada.ckpt"
+all_model_checkpoint_paths: "red_neuronal_entrenada.ckpt"
