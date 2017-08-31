@@ -84,7 +84,7 @@ $(document).ready(function () {
     function redraw() {
         clearCanvas();
 
-        var radius = 5;
+        var radius = 30;
         context.strokeStyle = "#000000";
         context.lineJoin = "round";
         context.lineWidth = radius;
