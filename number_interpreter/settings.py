@@ -27,7 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'number-interpreter-group6.herokuapp.com',
-    'localhost'
+    'localhost',
+    '127.0.0.1',
 ]
 
 
